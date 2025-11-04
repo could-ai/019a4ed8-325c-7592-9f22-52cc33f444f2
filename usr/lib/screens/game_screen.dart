@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:couldai_user_app/models/question.dart';
 import 'package:couldai_user_app/screens/game_over_screen.dart';
+import 'package:couldai_user_app/data/questions.dart';
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+  final String level;
+  const GameScreen({super.key, required this.level});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -12,45 +14,13 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   int _questionIndex = 0;
   int _score = 0;
+  late List<Question> _questions;
 
-  final List<Question> _questions = [
-    Question(
-      'What is the capital of France?',
-      [
-        Answer('Berlin', false),
-        Answer('Madrid', false),
-        Answer('Paris', true),
-        Answer('Rome', false),
-      ],
-    ),
-    Question(
-      'What is the largest planet in our solar system?',
-      [
-        Answer('Earth', false),
-        Answer('Jupiter', true),
-        Answer('Mars', false),
-        Answer('Saturn', false),
-      ],
-    ),
-    Question(
-      'What is the chemical symbol for water?',
-      [
-        Answer('O2', false),
-        Answer('CO2', false),
-        Answer('H2O', true),
-        Answer('NaCl', false),
-      ],
-    ),
-     Question(
-      'Who wrote "Hamlet"?',
-      [
-        Answer('Charles Dickens', false),
-        Answer('William Shakespeare', true),
-        Answer('Leo Tolstoy', false),
-        Answer('Mark Twain', false),
-      ],
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _questions = getQuestionsForLevel(widget.level);
+  }
 
   void _answerQuestion(bool isCorrect) {
     if (isCorrect) {
@@ -78,7 +48,7 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: Colors.deepPurple,
       appBar: AppBar(
-        title: const Text('Trivia Puzzle'),
+        title: Text('Trivia Puzzle - ${widget.level}'),
         backgroundColor: Colors.deepPurple.shade700,
         elevation: 0,
       ),
